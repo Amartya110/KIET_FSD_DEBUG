@@ -1,39 +1,41 @@
-# KIET_FSD_DebugChallenge
+Solved Bugs
+Bug 1: Price Range Filter Exclusion (App.js)
+Symptom: Products at boundary prices (e.g., ₹500) were hidden.
 
-Bug Sheet — ShopEasy Debugging Assignment
-Instructions: Find and fix all 9 bugs spread across 4 files. The app compiles and runs without errors — all bugs are logical/behavioral.
+Fix: Updated filter logic to use inclusive operators (>= and <=) instead of strict inequality.
 
-Bug 1 — App.js | Easy
-Symptom: Price range filters exclude products at the exact boundary price (e.g. "Under ₹500" won't show the ₹499 product; "₹500–₹1,000" won't show the ₹500 or ₹1,000 products).
+Bug 2: Category Filter Inactive (App.js)
+Symptom: Clicking category buttons didn't update the grid.
 
+Fix: The category state variable is missing from the memo. 
 
-Bug 2 — App.js | Hard
-Symptom: Clicking any Category button (Electronics, Footwear, etc.) has no effect — the product grid never changes.
+Bug 3: Cart "Delete" Behavior (App.js)
+Symptom: Deleting an item removed everything except that item.
 
+Fix: Fixed the filter method logic. Changed (setCartItems(prev => prev.filter(i => i.id === id));) to (setCartItems(prev => prev.filter(i => i.id != id));) to correctly keep the items that were not selected for deletion.
 
-Bug 3 — App.js | Easy
-Symptom: Clicking the 🗑️ delete button in the cart removes all other items and keeps only the one you tried to delete.
+Bug 4: Cart Badge Visibility (App.js)
+Symptom: The header badge stayed at 0.
 
+Fix:  change this to (const cartCount = cartItems.reduce((sum, i) => sum + i.count, 0);) to  (const cartCount = cartItems.reduce((sum, i) => sum + i.qty, 0);)
 
-Bug 4 — App.js | Medium
-Symptom: The cart badge on the header button always shows nothing (or 0) even after adding multiple items.
+Bug 6: Cart Total Calculation (Cart.jsx)
+Symptom: Total stayed at ₹0.
 
+Fix: Same bug which is in 4 where count is written at place of qty, where count is not intialized.
 
-Bug 5 — App.js | Hard
-Symptom: The "+ Add to Cart" button never turns green and never says "✓ Added", even after a product is in the cart.
+Bug 7: Negative Quantity Prevention (Cart.jsx)
+Symptom: Quantity could drop below 1.
 
+Fix: Disabled attribute is already given, i have changed (disabled={item.qty <= 0}) to (disabled={item.qty <= 1},) so after qty 1 it will be disabled.
 
-Bug 6 — Cart.jsx | Medium
-Symptom: The cart total always shows ₹0, no matter how many items or quantities are added.
+Bug 8: Inverted Sort Order (Filters.jsx)
+Symptom: Low to High showed expensive items first.
 
+Fix: In filter.jsx changed the code of 59 and 60, swapped the asc to desc.
 
-Bug 7 — Cart.jsx | Medium
-Symptom: The − (decrease) button in the cart is never disabled, allowing quantity to drop to 0 (and below), breaking the total.
+Bug 9: Star Rating Rounding (ProductCard.jsx)
+Symptom: 4.5 rating showed 4 stars.
 
+Fix: Changed the loop condition from star <= Math.floor(rating) to star <= Math.ceil(rating) to include the partially filled star.
 
-Bug 8 — Filters.jsx | Easy
-Symptom: The sort order is inverted — selecting "Price: Low to High" sorts highest-priced items first, and vice versa.
-
-
-Bug 9 — ProductCard.jsx | Easy
-Symptom: A product rated 4.5 shows only 4 filled stars instead of 5. All half-star ratings are rounded down.
